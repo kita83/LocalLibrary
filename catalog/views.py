@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views import generic
 
 from catalog.models import Book, BookInstance, Author
 
@@ -21,3 +22,14 @@ def index(request):
                       'num_authors': num_authors
                       },
                   )
+
+
+class BookListView(generic.ListView):
+    model = Book
+    context_object_name = 'book_list'
+    queryset = Book.objects.filter(title__icontains='war')[:5]
+    template_name = 'books/my_arbitrary_template_name_list.html'
+
+
+class BookDetailView(generic.DeleteView):
+    model = Book
